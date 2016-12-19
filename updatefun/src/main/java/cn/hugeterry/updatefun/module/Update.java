@@ -33,11 +33,11 @@ public class Update extends Thread {
                     .openConnection();
             conn.setRequestMethod("GET");
             conn.setReadTimeout(3000);
-
+            Log.i("UpdateFun TAG", "url:" + url);
             if (conn.getResponseCode() == 200) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(
                         conn.getInputStream()));
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
                 String str;
 
                 while ((str = reader.readLine()) != null) {
@@ -47,18 +47,18 @@ public class Update extends Thread {
 
                 interpretingData(result);
             }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private void interpretingData(String result) {
+        Log.i("UpdateFun TAG", result);
         try {
             JSONObject object = new JSONObject(result);
             DownloadKey.changeLog = object.getString("changelog");
             DownloadKey.version = object.getString("versionShort");
+            DownloadKey.versionCode = object.getInt("version");
             DownloadKey.apkUrl = object.getString("installUrl");
             Log.i("UpdateFun TAG",
                     String.format("ChangeLog:%s, Version:%s, ApkDownloadUrl:%s",

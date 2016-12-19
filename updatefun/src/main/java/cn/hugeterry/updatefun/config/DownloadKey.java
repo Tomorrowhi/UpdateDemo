@@ -18,5 +18,6 @@ public class DownloadKey {
     public static String apkUrl = "";
     public static String changeLog = "";
     public static String version;
+    public static int versionCode;
     public static boolean interceptFlag = false;
 }

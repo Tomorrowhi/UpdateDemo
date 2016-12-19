@@ -1,15 +1,5 @@
 package cn.hugeterry.updatefun.module;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.ref.WeakReference;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -19,6 +9,16 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.ref.WeakReference;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import cn.hugeterry.updatefun.config.DownloadKey;
 import cn.hugeterry.updatefun.config.UpdateKey;
@@ -82,6 +82,7 @@ public class Download extends Thread {
                         ((DownLoadDialog) context).progressBar.setProgress(progress);
                         ((DownLoadDialog) context).textView.setText(progress + "%");
                     } else if (UpdateKey.DialogOrNotification == 2) {
+                        Log.i("UpdateFun TAG", "2:"+count + ":" + length);
                         builder.setProgress(length, count, false)
                                 .setContentText("下载进度:" + progress + "%");
                         notificationManager.notify(1115, builder.build());
@@ -162,6 +163,11 @@ public class Download extends Thread {
             byte buf[] = new byte[1024];
             int times = 0; //这很重要
             int numread;
+            progress = 0;
+            if(UpdateKey.DialogOrNotification == 2){
+                count = 0;
+            }
+            Log.i("UpdateFun TAG", "1:"+count + ":" + length);
             do {
                 numread = is.read(buf);
                 count += numread;

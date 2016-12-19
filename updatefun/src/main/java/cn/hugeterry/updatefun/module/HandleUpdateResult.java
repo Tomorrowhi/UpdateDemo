@@ -21,11 +21,13 @@ import cn.hugeterry.updatefun.view.UpdateDialog;
 public class HandleUpdateResult implements Runnable {
 
     private String version = "";
+    private int versionCode = 0;
     private Up_handler up_handler;
 
     public HandleUpdateResult(Context context) {
         up_handler = new Up_handler(context);
         this.version = GetAppInfo.getAppVersionName(context);
+        this.versionCode = GetAppInfo.getAppVersionCode(context);
     }
 
     private static class Up_handler extends Handler {
@@ -79,7 +81,8 @@ public class HandleUpdateResult implements Runnable {
             Log.i("UpdateFun TAG", "获取的应用信息为空，不更新，请确认网络是否畅通或者应用ID及API_TOKEN是否正确");
             msg.arg1 = 2;
             up_handler.sendMessage(msg);
-        } else if (!DownloadKey.version.equals(version)) {
+//        } else if (!DownloadKey.version.equals(version)) {
+        } else if (DownloadKey.versionCode > versionCode) {
             Log.i("UpdateFun TAG", "需更新版本");
             msg.arg1 = 1;
             up_handler.sendMessage(msg);
